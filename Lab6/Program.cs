@@ -59,25 +59,31 @@ namespace Lab6
             var ListStudent2 = ListStudent1.OrderBy(u => u.Marks.Average()).ToList();
             var best = ListStudent2.Select(u => u.Name).Last();
             Console.WriteLine(best);
+
             //Listę studentów, którzy posiadają najmniej ocen
-            //var ListStudent3 = ListStudent1.OrderBy(u => u.Marks).Max().ToString();
+            var ListStudent3 = ListStudent1.OrderBy(u => u.Marks.Count()).ToList();
+            var ListMin = ListStudent3.Where(u => u.Marks.Count() == ListStudent3.First().Marks.Length).ToList();
             //Console.WriteLine(best);
 
             //Listę studentów, którzy posiadają najwięcej ocen
-
+            var ListMax = ListStudent3.Where(u => u.Marks.Count() == ListStudent3.Last().Marks.Length).ToList();
             //Listę obiektów zawierających tylko nazwę i średnią ocenę(mapowanie na inny obiekt)
+            var NameAvg = Users.Get().Where(u => u.Marks != null).Select(u => new { Type = u.Name, avg = u.Marks.Average() }).ToList();
 
             //Studentów posortowanych od najlepszego
-            var ListStudent3 = ListStudent1.OrderByDescending(u => u.Marks.Average()).ToList();
-            Console.WriteLine(ListStudent3);
-            //Listę użytkowników pogrupowanych po miesiącach daty utworzenia(np. 2022 - 02, 2022 - 03, 2022 - 04, itp.)
+            var ListStudent4 = ListStudent1.OrderByDescending(u => u.Marks.Average()).ToList();
 
-            //var groupByMonth = Users.Get().GroupBy(u => u.CreatedAt);
+            //Listę użytkowników pogrupowanych po miesiącach daty utworzenia
+            var DateCreate = Users.Get().OrderBy(u => u.CreatedAt).Where(u => u.CreatedAt != null).Where(u => u.CreatedAt.HasValue).GroupBy(u => u.CreatedAt.Value.Month).ToList();
 
             //Listę użytkowników, którzy nie zostali usunięci(data usunięcia nie została ustawiona)
-            //var noDeleteStudent = Users.Get().OrderBy
+            var noDeleteStudent = Users.Get().Where(u => u.RemovedAt == null).ToList();
+            Console.WriteLine();
 
             //Najnowszego studenta(najnowsza data utworzenia)
+            var newUser = Users.Get().Where(u => u.Role == "STUDENT").OrderBy(u => u.CreatedAt).Select(u => u.Name).Last();
+            Console.WriteLine(newUser);
+            //}
         }
     }
 }

@@ -30,10 +30,10 @@ namespace Lab6
             users.Add(new User() { Name = "Marcin", Role = "STUDENT", Age = 11, Marks = new int[] { 3, 3 }, CreatedAt = new DateTime(2020, 06, 20) });
             users.Add(new User() { Name = "Damian", Role = "STUDENT", Age = 16, Marks = new int[] { 5, 3 }, CreatedAt = new DateTime(2020, 06, 20) });
             users.Add(new User() { Name = "Jolanta", Role = "STUDENT", Age = 12, Marks = new int[] { 5, 5, 2 }, CreatedAt = new DateTime(2020, 06, 20) });
-            users.Add(new User() { Name = "Sara", Role = "STUDENT", Age = 12, Marks = new int[] { 3, 5, 3 }, CreatedAt = new DateTime(2020, 06, 20) });
-            users.Add(new User() { Name = "Kamila", Role = "STUDENT", Age = 6, Marks = new int[] { 4, }, CreatedAt = new DateTime(2020, 06, 20) });
-            users.Add(new User() { Name = "Dawid", Role = "STUDENT", Age = 14, Marks = new int[] { 5, 4, 3 }, CreatedAt = new DateTime(2020, 06, 20), RemovedAt = new DateTime(2022, 06, 20) });
-            users.Add(new User() { Name = "Paulina", Role = "STUDENT", Age = 10, Marks = new int[] { 1, 4, 2 }, CreatedAt = new DateTime(2020, 06, 20) });
+            users.Add(new User() { Name = "Sara", Role = "STUDENT", Age = 12, Marks = new int[] { 3, 5, }, CreatedAt = new DateTime(2020, 06, 20) });
+            users.Add(new User() { Name = "Kamila", Role = "STUDENT", Age = 6, Marks = new int[] { 4, 1 }, CreatedAt = new DateTime(2020, 06, 20) });
+            users.Add(new User() { Name = "Dawid", Role = "STUDENT", Age = 14, Marks = new int[] { 5, 4, 3 }, CreatedAt = new DateTime(2022, 06, 20), RemovedAt = new DateTime(2022, 06, 20) });
+            users.Add(new User() { Name = "Paulina", Role = "STUDENT", Age = 10, Marks = new int[] { 1, 4, 2 }, CreatedAt = new DateTime(2020, 12, 20) });
             users.Add(new User() { Name = "Stefan", Role = "STUDENT", Age = 15, Marks = new int[] { 4, 1, 2 }, CreatedAt = new DateTime(2020, 06, 20) });
 
             return users;
