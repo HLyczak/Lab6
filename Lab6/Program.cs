@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.Json;
 using System.Xml.Serialization;
@@ -108,45 +109,53 @@ namespace Lab6
             var lisjsondeserialize = JsonSerializer.Deserialize<IEnumerable<User>>(jsonUsers);
             Console.WriteLine();
 
-            //user serialize XML
-            XmlSerializer serializer = new XmlSerializer(typeof(User));
+            //serialize user xml
+            XmlSerializer serializer = new XmlSerializer(user.GetType());
+            using MemoryStream stream = new MemoryStream();
+            serializer.Serialize(stream, user);
+            stream.Flush();
+            var xmlUser = Encoding.UTF8.GetString(stream.ToArray());
 
-            using (MemoryStream stream = new MemoryStream())
-            {
-                serializer.Serialize(stream, user);
-                stream.Flush();
-                string xml = Encoding.UTF8.GetString(stream.ToArray());
-                Console.WriteLine(xml);
-            }
+            //deserialize user xml
+            using TextReader reader = new StringReader(xmlUser);
+            var userFromXml = (User)serializer.Deserialize(reader);
+
             //list serialize xml
-            XmlSerializer serializerlist = new XmlSerializer(users.GetType(), new Type[] { typeof(User), typeof(List<User>) });
+            XmlSerializer serializerList = new XmlSerializer(users.GetType(), new Type[] { typeof(User) });
+            using MemoryStream streamList = new MemoryStream();
+            serializerList.Serialize(streamList, users);
+            streamList.Flush();
+            var xmlList = Encoding.UTF8.GetString(streamList.ToArray());
 
-            using (MemoryStream stream = new MemoryStream())
-            {
-                serializer.Serialize(stream, users);
-                stream.Flush();
-                string xmllist = Encoding.UTF8.GetString(stream.ToArray());
-                Console.WriteLine(xmllist);
-            }
-            //deserialize xml user
+            //deserialize list xml
+            using TextReader readerList = new StringReader(xmlList);
+            var usersFromXml = (IEnumerable<User>)serializerList.Deserialize(readerList);
 
-            // byte[] bytes = Encoding.UTF8.GetBytes(serializer);
+            //serialize user binary
+            var formatter = new BinaryFormatter();
 
-            XmlSerializer derializer = new XmlSerializer(typeof(User));
+            using var streamBinary = new MemoryStream();
+            formatter.Serialize(streamBinary, user);
+            streamBinary.Flush();
+            streamBinary.Position = 0;
+            var binaryUser = streamBinary.ToArray();
 
-            //using (MemoryStream stream = new MemoryStream(bytes))
-            {
-                //User user = (User)serializer.Deserialize(stream);
-                Console.WriteLine("Name: " + user.Name);
-                Console.WriteLine("Role: " + user.Role);
-                Console.WriteLine("Marks: " + user.Marks);
-                Console.WriteLine("Age: " + user.Age);
-            }
+            //deserialize user binary
+            using var streamBinaryDeserialize = new MemoryStream(binaryUser);
+            streamBinaryDeserialize.Seek(0, SeekOrigin.Begin);
+            var userFromBinary = (User)formatter.Deserialize(streamBinaryDeserialize);
 
-            //desetializa xml list
+            //list serialize binary
+            using var streamListBinary = new MemoryStream();
+            formatter.Serialize(streamListBinary, users);
+            streamListBinary.Flush();
+            streamListBinary.Position = 0;
+            var binaryUsers = streamListBinary.ToArray();
 
-            //user serialize binarna
-            //list serialize binarna
+            //deserialize list binary
+            using var streamBinaryListDeserialize = new MemoryStream(binaryUsers);
+            streamBinaryListDeserialize.Seek(0, SeekOrigin.Begin);
+            var usersFromBinary = (IEnumerable<User>)formatter.Deserialize(streamBinaryListDeserialize);
         }
     }
 }
